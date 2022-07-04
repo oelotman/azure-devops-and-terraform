@@ -10,19 +10,19 @@ terraform {
       version = "2.92.0"
     }
   }
-}
-
-provider "azurerm" {
-    features {}
-    use_msi = true
-  # Configuration options
-  backend "azurerm" {
+   backend "azurerm" {
     storage_account_name = "oelotmanstg01"
     container_name       = "blob01"
     key                  = "prod.terraform.tfstate"
     subscription_id      = "d9461c87-de3b-401c-9a99-0cfa3fabee67"
     tenant_id            = "76a2ae5a-9f00-4f6b-95ed-5d33d77c4d61"
   }
+}
+
+provider "azurerm" {
+    features {}
+    use_msi = true
+  # Configuration options
 }
 resource "azurerm_resource_group" "tf_test" {
   name     = "rg_test"
