@@ -73,7 +73,7 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                terraform apply -input=false -autoapprouve
+                terraform apply -input=false -auto-approve
             env:
               ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
               ARM_TENANT_ID: $(ARM_TENANT_ID)
