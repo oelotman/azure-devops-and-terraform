@@ -25,6 +25,12 @@ provider "azurerm" {
     use_msi = true
   # Configuration options
 }
+
+variable "imagebuild" {
+    type = string 
+    description = "latest_imagebuild" 
+}
+
 resource "azurerm_resource_group" "tf_test" {
   name     = "rg_test"
   location = "West Europe"
@@ -40,7 +46,7 @@ resource "azurerm_container_group" "tfcg_test" {
 
   container {
     name   = "ct001"
-    image  = "otmane1990/weatherapi"
+    image  = "otmane1990/weatherapi:${var.imagebuild}"
     cpu    = "1"
     memory = "1"
 
