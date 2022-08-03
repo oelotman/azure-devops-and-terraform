@@ -11,11 +11,12 @@ terraform {
     }
   }
    backend "azurerm" {
-    storage_account_name = "oelotmanstg01"
-    container_name       = "blob01"
+    resource_group_name = "rg_stat01"
+    storage_account_name = "oelotmanstg02"
+    container_name       = "blob02"
     key                  = "prod.terraform.tfstate"
-    subscription_id      = "d9461c87-de3b-401c-9a99-0cfa3fabee67"
-    tenant_id            = "76a2ae5a-9f00-4f6b-95ed-5d33d77c4d61"
+    subscription_id      = "bac50807-6856-4963-a21f-181763093c18"
+    tenant_id            = "49308f78-54b6-4e99-b47a-f03d84bdd855"
   }
 }
 
