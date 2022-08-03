@@ -64,17 +64,20 @@ stages:
      vmImage: ubuntu-latest
     variables:
     - group: terraformspvars
-    steps:
-    - task: PowerShell@2
-      displayName: terraform plan
-      inputs:
-        targetType: 'inline'
-        script: |
-          set -e
-          terraform apply -input=false -autoapprouve
-      env:
-        ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
-        ARM_TENANT_ID: $(ARM_TENANT_ID)
-        ARM_CLIENT_ID: $(ARM_CLIENT_ID)
-        ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
-      
+    strategy:
+      runOnce:    #rolling, canary are the other strategies that are supported
+        deploy:
+          steps:
+          - task: PowerShell@2
+            displayName: terraform plan
+            inputs:
+              targetType: 'inline'
+              script: |
+                set -e
+                terraform apply -input=false -autoapprouve
+            env:
+              ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+              ARM_TENANT_ID: $(ARM_TENANT_ID)
+              ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+              ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+            
