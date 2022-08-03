@@ -29,7 +29,7 @@ stages:
         tags: |
           $(tag)
 - stage: plan
-  displayName: terraforming on azure 
+  displayName: terraform plan
   dependsOn: Build
   jobs:
   - job: plan_job 
@@ -44,7 +44,6 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
-          set -e
           terraform init -input=false
           terraform plan -input=false
       env:
@@ -54,7 +53,7 @@ stages:
         ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
 
 - stage: apply
-  displayName: terraforming on azure 
+  displayName: terraform apply
   dependsOn: plan
   jobs:
   - deployment: apply_job 
@@ -73,7 +72,6 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                set -e
                 terraform apply -input=false -autoapprouve
             env:
               ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
