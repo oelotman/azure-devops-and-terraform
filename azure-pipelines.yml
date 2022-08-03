@@ -29,18 +29,18 @@ stages:
         tags: |
           $(tag)
 - stage: plan
-  displayname: terraforming on azure 
+  displayName: terraforming on azure 
   dependsOn: Build
   jobs:
   - job: plan_job 
-    displayname: provision container instance 
+    displayName: provision container instance 
     pool:
      vmImage: ubuntu-latest
     variables:
     - group: terraformspvars
     steps:
     - task: PowerShell@2
-      displayname: terraform plan
+      displayName: terraform plan
       inputs:
         targetType: 'inline'
         script: |
@@ -54,19 +54,19 @@ stages:
         ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
 
 - stage: apply
-  environment: prod
-  displayname: terraforming on azure 
+  displayName: terraforming on azure 
   dependsOn: plan
   jobs:
-  - job: apply_job 
-    displayname: provision container instance 
+  - deployment: apply_job 
+    environment: prod
+    displayName: provision container instance 
     pool:
      vmImage: ubuntu-latest
     variables:
     - group: terraformspvars
     steps:
     - task: PowerShell@2
-      displayname: terraform plan
+      displayName: terraform plan
       inputs:
         targetType: 'inline'
         script: |
