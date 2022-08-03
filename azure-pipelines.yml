@@ -28,3 +28,53 @@ stages:
         Dockerfile: '**/Dockerfile'
         tags: |
           $(tag)
+- stage: plan
+  displayname: terraforming on azure 
+  dependsOn: Build
+  jobs:
+  - job: plan_job 
+    displayname: provision container instance 
+    pool:
+     vmImage: ubuntu-latest
+    variables:
+    - group: terraformspvars
+    steps:
+    - task: PowerShell@2
+      displayname: terraform plan
+      inputs:
+        targetType: 'inline'
+        script: |
+          set -e
+          terraform init -input=false
+          terraform plan -input=false
+      env:
+        ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+        ARM_TENANT_ID: $(ARM_TENANT_ID)
+        ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+        ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+
+- stage: apply
+  environment: prod
+  displayname: terraforming on azure 
+  dependsOn: plan
+  jobs:
+  - job: apply_job 
+    displayname: provision container instance 
+    pool:
+     vmImage: ubuntu-latest
+    variables:
+    - group: terraformspvars
+    steps:
+    - task: PowerShell@2
+      displayname: terraform plan
+      inputs:
+        targetType: 'inline'
+        script: |
+          set -e
+          terraform apply -input=false -autoapprouve
+      env:
+        ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+        ARM_TENANT_ID: $(ARM_TENANT_ID)
+        ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+        ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+      
